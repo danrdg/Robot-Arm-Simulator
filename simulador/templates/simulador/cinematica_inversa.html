@@ -1,0 +1,84 @@
+{% extends "simulador/base.html" %}
+{% load static %}
+
+{% block titulo %}Cinemática Inversa{% endblock %}
+
+{% block contenido %}
+<h1 class="titulo-pagina">Cinemática Inversa</h1>
+
+<div class="layout-dos-columnas">
+
+    <!--Columna izquierda: controles-->
+    <section class="panel-controles">
+
+        <!--Selector de robot -->
+        <div class="grupo-control">
+            <label for="selector-robot">Robot:</label>
+            <select id="selector-robot">
+                {% for robot in robots %}
+                    <option value="{{ robot.id }}">{{ robot.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        
+        <!--Posición objetivo-->
+        <div class="grupo-control">
+            <h3>Posición objetivo</h3>
+            <div class="fila-xyz">
+                <label>X <input type="number" id="objetivo-x" value="0" step="0.1"></label>
+                <label>Y <input type="number" id="objetivo-y" value="1.3" step="0.1"></label>
+                <label>Z <input type="number" id="objetivo-z" value="0.5" step="0.1"></label>
+            </div>
+            <button id="btn-calcular" class="boton-principal">Calcular</button>
+        </div>
+
+        <!--Resultados-->
+        <div id="panel-resultado" style="display:none;">
+            <h3>Resultado</h3>
+            <p id="estado-convergencia"></p>
+            <p>Error final: <span id="res-error">—</span></p>
+            <p>Iteraciones: <span id="res-iter">—</span></p>
+            <h4>Valores articulares:</h4>
+            <ul id="lista-articulares"></ul>
+        </div>
+
+        <!--Tabla D-H en tiempo real-->
+        <div class="grupo-control" id="panel-dh" style="display:none;">
+            <h3>Parametrización D-H</h3>
+            <table class="tabla-dh">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tipo</th>
+                        <th>θ (rad)</th>
+                        <th>d (m)</th>
+                        <th>a (m)</th>
+                        <th>α (rad)</th>
+                    </tr>
+                </thead>
+                <tbody id="dh-filas"></tbody>
+            </table>
+        </div>
+
+        <!--Mensaje de error-->
+        <div id="mensaje-error" class="alerta-error" style="display:none;"></div>
+
+    </section>
+
+    <!--Columna derecha: visualizador 3D-->
+    <section class="contenedor-visualizador">
+        <div id="visualizador-3d"></div>
+    </section>
+
+</div>
+
+<script>
+    var ROBOTS_PREDEFINIDOS = {{ robots_json|safe }};
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{% static 'simulador/js/viewer.js' %}"></script>
+<script type="module" src="{% static 'simulador/js/cinematica_inversa.js' %}"></script>
+{% endblock %}
