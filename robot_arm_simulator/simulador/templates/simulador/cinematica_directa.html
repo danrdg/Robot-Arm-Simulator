@@ -1,0 +1,74 @@
+{% extends "simulador/base.html" %}
+{% load static %}
+{% block titulo %}Cinemática Directa{% endblock %}
+{% block contenido %}
+<h1 class="titulo-pagina">Cinemática Directa</h1>
+
+<div class="layout-dos-columnas">
+
+    <!--Columna izquierda: controles-->
+    <section class="panel-controles">
+
+        <!-- Selector de robot -->
+        <div class="grupo-control">
+            <label for="selector-robot">Robot:</label>
+            <select id="selector-robot">
+                {% for robot in robots %}
+                    <option value="{{ robot.id }}">{{ robot.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!--Sliders de articulaciones-->
+        <div id="panel-articulaciones">
+            <p class="texto-ayuda">Selecciona un robot para ver sus articulaciones.</p>
+        </div>
+
+        <!--Resultado-->
+        <div class="grupo-control" id="panel-resultado" style="display:none;">
+            <h3>Posición del efector</h3>
+            <p>X: <span id="res-x">—</span></p>
+            <p>Y: <span id="res-y">—</span></p>
+            <p>Z: <span id="res-z">—</span></p>
+        </div>
+
+        <!-- Tabla D-H en tiempo real-->
+        <div class="grupo-control" id="panel-dh" style="display:none;">
+            <h3>Parametrización D-H</h3>
+            <table class="tabla-dh">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Tipo</th>
+                        <th>θ (rad)</th>
+                        <th>d (m)</th>
+                        <th>a (m)</th>
+                        <th>α (rad)</th>
+                    </tr>
+                </thead>
+                <tbody id="dh-filas"></tbody>
+            </table>
+        </div>
+
+        <!-- Mensaje de error -->
+        <div id="mensaje-error" class="alerta-error" style="display:none;"></div>
+
+    </section>
+
+    <!--Columna derecha: visualizador 3D-->
+    <section class="contenedor-visualizador">
+        <div id="visualizador-3d"></div>
+    </section>
+
+</div>
+
+<!--Datos del servidor pasados al JS-->
+<script>
+    var ROBOTS_PREDEFINIDOS = {{ robots_json|safe }};
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script type="module" src="{% static 'simulador/js/viewer.js' %}"></script>
+<script type="module" src="{% static 'simulador/js/cinematica_directa.js' %}"></script>
+{% endblock %}

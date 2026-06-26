@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block titulo %}Simulador Robótico{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'simulador/css/estilos.css' %}">
+</head>
+<body>
+
+    <!-- Barra de navegación principal -->
+    <nav class="nav-principal">
+        <span class="nav-marca">Simulador Robótico 3D</span>
+        <ul class="nav-enlaces">
+            <li><a href="{% url 'simulador:cinematica_directa' %}">Cinemática Directa</a></li>
+            <li><a href="{% url 'simulador:cinematica_inversa' %}">Cinemática Inversa</a></li>
+            <li><a href="{% url 'simulador:constructor_robot' %}">Constructor</a></li>
+        </ul>
+    </nav>
+
+    <!-- Contenido principal -->
+    <main class="contenido-principal">
+        {% block contenido %}{% endblock %}
+    </main>
+
+    <!-- Three.js r183-->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.183.0/+esm"
+        }
+    }
+    </script>
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>
